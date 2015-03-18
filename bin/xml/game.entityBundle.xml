@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resource>
+	<e>
+		<Layer id = "gameLayer" index="0" />
+	</e>
+	<e>
+		<GameLevel sizeX="3" sizeY="4" pixelsX="32" pixelsY="32">
+			<p id="grid">
+				<i> <i>0</i> <i>0</i> <i>0</i> </i>
+				<i> <i>0</i> <i>0</i> <i>0</i> </i>
+				<i> <i>0</i> <i>0</i> <i>0</i> </i>
+				<i> <i>0</i> <i>0</i> <i>0</i> </i>
+			</p>
+		</GameLevel>
+	</e>
+	
+	<e>
+		<Layer id="characterLayer" index="1"/>
+	</e>
+	<e>
+		<Transform />
+		<TextureResource source="pictures/character.jpg" id="character" />
+		<Layered layerId="characterLayer" />
+		<Movable />
+		<Controlable />
+		<WatchedColors>
+			<p id="colors">
+				<i>0xb87b57</i>
+			</p>
+		</WatchedColors>
+	</e>
+	
+	<e>
+		<Tiles textureTilePath="pictures/" collisionTilePath="pictures/">
+			<p id="tileId">
+				<i>color</i>
+			</p>
+			<p id="textureTileName">
+				<i>color.jpg</i>
+			</p>
+			<p id="collisionTileName">
+				<i>colorCollision.jpg</i>
+			</p>
+		</Tiles>
+	</e>
+</resource>
