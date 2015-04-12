@@ -4,7 +4,7 @@
 		<Layer id = "gameLayer" index="0" />
 	</e>
 	<e>
-		<GameLevel sizeX="3" sizeY="4" pixelsX="32" pixelsY="32">
+		<GameLevel sizeX="3" sizeY="4" pixelsX="32" pixelsY="32" posX="100" posY="100">
 			<p id="grid">
 				<i> <i>0</i> <i>0</i> <i>0</i> </i>
 				<i> <i>0</i> <i>0</i> <i>0</i> </i>
@@ -20,8 +20,10 @@
 	<e>
 		<Transform />
 		<TextureResource source="pictures/character.jpg" id="character" />
+		<TextureTile tileIndex="1" />
+		<CollisionTile tileIndex="1" />
 		<Layered layerId="characterLayer" />
-		<Movable />
+		<Movable normalVelocity="2" />
 		<Controlable />
 		<WatchedColors>
 			<p id="colors">
@@ -33,13 +35,13 @@
 	<e>
 		<Tiles textureTilePath="pictures/" collisionTilePath="pictures/">
 			<p id="tileId">
-				<i>color</i>
+				<i>color</i> <i>character</i>
 			</p>
 			<p id="textureTileName">
-				<i>color.jpg</i>
+				<i>colorCollision.jpg</i> <i>character.jpg</i>
 			</p>
 			<p id="collisionTileName">
-				<i>colorCollision.jpg</i>
+				<i>colorCollision.jpg</i> <i>characterCollision.jpg</i>
 			</p>
 		</Tiles>
 	</e>

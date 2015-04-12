@@ -50,11 +50,11 @@ package managers {
 					for (var x:int = 0; x < gameLevel.sizeX; x++) {
 						var id:int = gameLevel.grid[y][x];
 						collisionMap.copyPixels(tiles.collisionTile[id], rect, new Point(x * gameLevel.pixelsX, y * gameLevel.pixelsY));
-						EntityFactory.createTextureTile(entityManager, x * gameLevel.pixelsX, y * gameLevel.pixelsY, "gameLayer", tiles.textureTilePath + tiles.textureTileName[id], tiles.tileId[id]);
+						EntityFactory.createTextureTile(entityManager, gameLevel.posX + x * gameLevel.pixelsX, gameLevel.posY + y * gameLevel.pixelsY, "gameLayer", tiles.textureTilePath + tiles.textureTileName[id], tiles.tileId[id]);
 					}
 				}
 				
-				EntityFactory.createCollisionMap(entityManager, collisionMap);
+				gameLevel.collisionMap = collisionMap;
 			}
 			
 			gss.setGameState(GameState.RUNNING);

@@ -7,23 +7,27 @@ package systems {
 	import com.ktm.genome.core.logic.system.System;
 	import com.ktm.genome.render.component.Transform;
 	import com.ktm.genome.resource.component.TextureResource;
-	import components.CollisionMap;
 	import components.Controlable;
 	import components.GameLevel;
 	import components.Movable;
 	import components.WatchedColors;
+	import components.TextureTile;
+	import components.CollisionTile;
+	import components.Tiles;
 	
 	public class CollisionSystem extends System {
 		
 		private var controlableEntities:Family;
-		private var grilleEntities:Family;
-		private var grilleMapper:IComponentMapper;
+		private var gameLevelEntities:Family;
+		private var tilesEntities:Family;
 		private var textureResourceMapper:IComponentMapper;
 		private var transformMapper:IComponentMapper;
 		private var movableMapper:IComponentMapper;
 		private var watchedColorsMapper:IComponentMapper;
-		private var collisionMapMapper:IComponentMapper;
-		private var collisionMapEntities:Family;
+		private var gameLevelMapper:IComponentMapper;
+		private var collisionTileMapper:IComponentMapper;
+		private var tilesMapper:IComponentMapper;
+		
 		
 		public function CollisionSystem() {
 			super();
@@ -32,15 +36,17 @@ package systems {
 		override protected function onConstructed():void {
 			super.onConstructed();
 			
-			controlableEntities = entityManager.getFamily(allOfGenes(Transform, TextureResource, Movable, Controlable));
-			grilleEntities = entityManager.getFamily(allOfGenes(GameLevel));
-			collisionMapEntities = entityManager.getFamily(allOfGenes(CollisionMap));
+			controlableEntities = entityManager.getFamily(allOfGenes(Transform, Movable, CollisionTile));
+			gameLevelEntities = entityManager.getFamily(allOfGenes(GameLevel));
+			tilesEntities = entityManager.getFamily(allOfGenes(Tiles));
 			
 			textureResourceMapper = geneManager.getComponentMapper(TextureResource);
 			transformMapper = geneManager.getComponentMapper(Transform);
 			movableMapper = geneManager.getComponentMapper(Movable);
 			watchedColorsMapper = geneManager.getComponentMapper(WatchedColors);
-			collisionMapMapper = geneManager.getComponentMapper(CollisionMap);
+			gameLevelMapper = geneManager.getComponentMapper(GameLevel);
+			collisionTileMapper = geneManager.getComponentMapper(CollisionTile);
+			tilesMapper = geneManager.getComponentMapper(Tiles);
 		}
 		
 		override protected function onProcess(delta:Number):void {
@@ -52,17 +58,32 @@ package systems {
 				var transform:Transform = transformMapper.getComponent(e);
 				var movable:Movable = movableMapper.getComponent(e);
 				var watchedColors:WatchedColors = watchedColorsMapper.getComponent(e);
-				var colors:Vector.<int> = watchedColors.colors;
+				var gameLevel:GameLevel = gameLevelMapper.getComponent(gameLevelEntities.members[0]);
+				var collisionTile:CollisionTile = collisionTileMapper.getComponent(e);
 				
-				var collisionMap:CollisionMap = collisionMapMapper.getComponent(collisionMapEntities.members[0]);
 				
-				for each (var colorHexa:int in colors) {
-					if (colorHexa == collisionMap.bitmapData.getPixel(transform.x, transform.y))
-						movable.velocity = 10;
-					else
-						movable.velocity = 2;
+				var tiles:Tiles = tilesMapper.getComponent(this.tilesEntities.members[0]);
+				var w:int = tiles.collisionTile[collisionTile.tileIndex].width;
+				var h:int = tiles.collisionTile[collisionTile.tileIndex].height;
+				var i:int = w * h;
+				var col:int;
+				var velocity:Array = new Array();
+				
+				while ( i-- ) {
+					if ( tiles.collisionTile[collisionTile.tileIndex].getPixel( i % w, int( i / w ) ) == int(0x000000)) {
+						var color:int = gameLevel.collisionMap.getPixel(transform.x + i % w - gameLevel.posX, transform.y + int( i / w ) - gameLevel.posY);
+						for each (var watchedColor:int in watchedColors.colors) {
+							if (color == watchedColor) {
+								velocity.push(8);
+							}
+							else {
+								velocity.push(0);
+							}
+						}
+					}
 				}
 				
+				movable.currentVelocity = movable.normalVelocity+Math.min.apply(null, velocity);
 			}
 		}
 	}

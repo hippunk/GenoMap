@@ -5,7 +5,6 @@ package {
 	import com.ktm.genome.render.component.Layered;
 	import com.ktm.genome.render.component.Transform;
 	import com.ktm.genome.resource.component.TextureResource;
-	import components.CollisionMap;
 	import flash.display.BitmapData;
 	
 	public class EntityFactory {
@@ -23,12 +22,5 @@ package {
 			em.addComponent(e, TextureResource, {source: source, id: id});
 			return e;
 		}
-		
-		static public function createCollisionMap(em:IEntityManager, collisionMap:BitmapData):IEntity {
-			var e:IEntity = em.create();
-			em.addComponent(e, CollisionMap, {bitmapData: collisionMap});
-			return e;
-		}
-	
 	}
 }

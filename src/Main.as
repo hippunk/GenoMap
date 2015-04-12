@@ -16,7 +16,11 @@ package {
 	import systems.CollisionSystem;
 	import systems.GameStateSystem;
 	
+	import components.TextureTile;
+	
 	public class Main extends Sprite {
+		
+		private var sdfld:TextureTile;
 		
 		public function Main() {
 			if (stage)

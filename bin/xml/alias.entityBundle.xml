@@ -9,4 +9,6 @@
 	<a name="Controlable" class="components.Controlable"/>
 	<a name="WatchedColors" class="components.WatchedColors"/>
 	<a name="Tiles" class="components.Tiles"/>
+	<a name="CollisionTile" class="components.CollisionTile"/>
+	<a name="TextureTile" class="components.TextureTile"/>
 </resource>

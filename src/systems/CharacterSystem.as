@@ -59,7 +59,7 @@ package systems {
 			transform.x = Math.round(Math.random() * (gameLevel.sizeX - 1)) * gameLevel.pixelsX;
 			transform.y = Math.round(Math.random() * (gameLevel.sizeY - 1)) * gameLevel.pixelsY;
 			var movable:Movable = movableMapper.getComponent(e);
-			movable.velocity = 2;
+			movable.currentVelocity = 2;
 		}
 		
 		private function keyDownHandler(event:KeyboardEvent):void {
@@ -121,22 +121,22 @@ package systems {
 				
 				if (left) {
 					if (transform.x > 0) {
-						transform.x -= movable.velocity;
+						transform.x -= movable.currentVelocity;
 					}
 				}
 				if (right) {
 					if (transform.x < stage.stageWidth - textureResource.bitmapData.width) {
-						transform.x += movable.velocity;
+						transform.x += movable.currentVelocity;
 					}
 				}
 				if (up) {
 					if (transform.y > 0) {
-						transform.y -= movable.velocity;
+						transform.y -= movable.currentVelocity;
 					}
 				}
 				if (down) {
 					if (transform.y < stage.stageHeight - textureResource.bitmapData.height) {
-						transform.y += movable.velocity;
+						transform.y += movable.currentVelocity;
 					}
 				}
 			}
