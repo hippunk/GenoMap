@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resource>
+	<a name="Transform" class="com.ktm.genome.render.component.Transform" />
+	<a name="TextureResource" class="com.ktm.genome.resource.component.TextureResource" />
+	<a name="Layer" class="com.ktm.genome.render.component.Layer" />
+	<a name="Layered" class="com.ktm.genome.render.component.Layered"/>
+
+	<a name="TypeCase" class="components.TypeCase"/>
+	<a name="CollisionTile" class="components.CollisionTile"/>
+	<a name="GrilleComponent" class="components.GrilleComponent"/>
+	<a name="CollisionMap" class="components.CollisionMap"/>
+	<a name="Level" class="components.Level"/>
+	<a name="Controlable" class="components.Controlable"/>
+	<a name="Movable" class="components.Movable"/>
+	<!--<a name="WatchedColors" class="components.WatchedColors"/>-->
+	
+	<!--<a name="Level" class="components.Level"/>-->
+	
+	
+	
+</resource>

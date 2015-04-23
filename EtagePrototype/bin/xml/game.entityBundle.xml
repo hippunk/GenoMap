@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resource>
+	
+	<!--<e>
+		<Layer id="gameLayer" index="0"/>
+	</e>
+	<e>
+		<Layer id="layer1" index="10"/>
+	</e>
+
+	<e>
+		<Layer id="layer3" index="30"/>
+	</e>
+	
+	<e>
+		<Layer id="floor1" index="11"/>
+	</e>
+	
+	<e>
+		<Layer id="floor2" index="21"/>
+	</e>
+	
+	<e>
+		<Layer id="floor3" index="31"/>
+	</e>
+	
+	<e>
+		<Transform x="132" y="122" />
+		<Level level="1"/>
+		<Layered layerId="floor2"/>
+		<TextureResource source="pictures/entite.png" id="entite"/>
+	</e>
+	
+	<e>
+		<Transform x="32" y="32" />
+		<Level level="2"/>
+		<Layered layerId="floor3"/>
+		<TextureResource source="pictures/entite.png" id="entite"/>
+	</e>	-->
+	<e>
+		<Layer id="layer1" index="20"/>
+	</e>
+	<e>
+		<Layer id="layer2" index="20"/>
+	</e>
+	<e>
+		<Layer id="layer3" index="30"/>
+	</e>
+	<e>
+		<TypeCase typeCase="Default"/>
+		<TextureResource source="pictures/default.png" id="default" />
+		<CollisionTile collisionTilePath="pictures/default.png"/>
+	</e>
+	
+	<e>
+		<TypeCase typeCase="Wall"/>
+		<TextureResource source="pictures/wall.png" id="wall" />
+		<CollisionTile collisionTilePath="pictures/wallCol.png"/>
+	</e>
+	
+	<e>
+		<TypeCase typeCase="Floor"/>
+		<TextureResource source="pictures/floor.png" id="floor" />
+		<CollisionTile collisionTilePath="pictures/floorCol.png"/>
+	</e>
+	<e>
+		<Layered layerId="layer1"/>
+		<CollisionMap />
+		<GrilleComponent tailleX="6" tailleY="7" startX="0" level="1" startY="0" pixels="32">
+			<p id="grille">
+				<i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i></i>
+				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
+				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
+				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
+				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
+				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
+				<i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i></i>
+			</p>
+		</GrilleComponent>
+	</e>		
+	<e>
+		<Layered layerId="layer2"/>
+		<CollisionMap />
+		<GrilleComponent tailleX="6" tailleY="7" startX="100" level="2" startY="90" pixels="32">
+			<p id="grille">
+				<i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i></i>
+				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
+				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
+				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
+				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
+				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
+				<i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i></i>
+			</p>
+		</GrilleComponent>
+	</e>	
+	
+	<e>
+		<Transform />
+		<TextureResource source="pictures/char.png" id="char" />
+		<CollisionTile collisionTilePath="pictures/charCol.jpg"/>
+		<Layered layerId="layer3" />
+		<Movable normalVelocity="2" />
+		<Controlable />
+		<!--<WatchedColors>
+			<p id="colors">
+				<i>0xffff00</i>
+			</p>
+		</WatchedColors>-->
+	</e>
+</resource>
