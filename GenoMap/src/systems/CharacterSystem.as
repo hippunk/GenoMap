@@ -7,8 +7,12 @@ package systems {
 	import com.ktm.genome.core.logic.system.System;
 	import com.ktm.genome.render.component.Transform;
 	import com.ktm.genome.resource.component.TextureResource;
+	import components.CollisionMap;
+	import components.CollisionTile;
 	import components.Controlable;
+	import components.Grille;
 	import components.Movable;
+	import components.WatchedColors;
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
@@ -16,10 +20,15 @@ package systems {
 	public class CharacterSystem extends System {
 		
 		private var stage:Stage;
+		private var etage:Family;
 		private var characterEntities:Family;
 		private var transformMapper:IComponentMapper;
 		private var movableMapper:IComponentMapper;
 		private var textureResourceMapper:IComponentMapper;
+		private var collisionTileMapper:IComponentMapper;
+		private var watchedColorsMapper:IComponentMapper;
+		private var collisionMapMapper:IComponentMapper;
+		private var grilleMapper:IComponentMapper;
 		private var left:Boolean;
 		private var right:Boolean;
 		private var up:Boolean;
@@ -42,8 +51,13 @@ package systems {
 			transformMapper = geneManager.getComponentMapper(Transform);
 			movableMapper = geneManager.getComponentMapper(Movable);
 			textureResourceMapper = geneManager.getComponentMapper(TextureResource);
+			collisionTileMapper = geneManager.getComponentMapper(CollisionTile);
+			watchedColorsMapper = geneManager.getComponentMapper(WatchedColors);
+			collisionMapMapper = geneManager.getComponentMapper(CollisionMap);
+			grilleMapper = geneManager.getComponentMapper(Grille);
 			
-			characterEntities = entityManager.getFamily(allOfGenes(Transform, Controlable));
+			etage = entityManager.getFamily(allOfGenes(CollisionMap, Grille));
+			characterEntities = entityManager.getFamily(allOfGenes(Transform, Controlable, Movable, WatchedColors));
 			characterEntities.entityAdded.add(onBonhommeAdded);
 		}
 		
@@ -101,33 +115,81 @@ package systems {
 		override protected function onProcess(delta:Number):void {
 			super.onProcess(delta);
 			
-			for (var iChar:int = 0; iChar < characterEntities.members.length; iChar++) {
-				var characterEntity:IEntity = characterEntities.members[iChar];
+			for each (var characterEntity:IEntity in characterEntities.members) {
+				//for (var iChar:int = 0; iChar < characterEntities.members.length; iChar++) {
+				//	var characterEntity:IEntity = characterEntities.members[iChar];
 				var transform:Transform = transformMapper.getComponent(characterEntity);
 				var movable:Movable = movableMapper.getComponent(characterEntity);
+				var watchedColors:WatchedColors = watchedColorsMapper.getComponent(characterEntity);
 				var textureResource:TextureResource = textureResourceMapper.getComponent(characterEntity);
+				var collisionTile:CollisionTile = collisionTileMapper.getComponent(characterEntity);
+// ne gère qu'un seul étage en dur dans le code
+				var grille:Grille = grilleMapper.getComponent(etage.members[0]);
 				
-				if (left) {
-					if (transform.x > 0) {
-						transform.x -= movable.currentVelocity;
-					}
+				var x:int = transform.x;
+				var y:int = transform.y;
+				
+				if (left && !up && !down) {
+					x -= movable.currentVelocity;
 				}
-				if (right) {
-					if (transform.x < stage.stageWidth - textureResource.bitmapData.width) {
-						transform.x += movable.currentVelocity;
-					}
+				if (right && !up && !down) {
+					x += movable.currentVelocity;
 				}
-				if (up) {
-					if (transform.y > 0) {
-						transform.y -= movable.currentVelocity;
-					}
+				if (up && !right && !left) {
+					y -= movable.currentVelocity;
 				}
-				if (down) {
-					if (transform.y < stage.stageHeight - textureResource.bitmapData.height) {
-						transform.y += movable.currentVelocity;
+				if (down && !right && !left) {
+					y += movable.currentVelocity;
+				}
+				if (up && right) {
+					y -= movable.currentVelocity;
+					x += movable.currentVelocity;
+				}
+				if (up && left) {
+					y -= movable.currentVelocity;
+					x -= movable.currentVelocity;
+				}
+				if (down && right) {
+					y += movable.currentVelocity;
+					x += movable.currentVelocity;
+				}
+				if (down && left) {
+					y += movable.currentVelocity;
+					x -= movable.currentVelocity;
+				}
+				
+				if (!inWall(collisionTile, x, y, etage.members[0], movable.normalVelocity, watchedColors)) {
+					transform.x = x;
+					transform.y = y;
+				}
+			}
+		}
+		
+		public function inWall(collisionTile:CollisionTile, x:int, y:int, grilleEntity:IEntity, normalVelocity:int, watchedColors:WatchedColors):Boolean {
+			var grille:Grille = grilleMapper.getComponent(grilleEntity);
+			var collisionMap:CollisionMap = collisionMapMapper.getComponent(grilleEntity);
+			var w:int = collisionTile.bitmapData.width;
+			var h:int = collisionTile.bitmapData.height;
+			var i:int = w * h;
+			var col:int;
+			var velocity:Array = new Array();
+			
+			// pour tous les pixels de la collision tile
+			while (i--) {
+				// si c'est un pixel noir
+				if (collisionTile.bitmapData.getPixel(i % w, int(i / w)) == int(0x000000)) {
+					// on récupère la couleur du pixel de la carte de collision correspondant à la position du pixel noir considéré
+					var color:int = collisionMap.bitmapData.getPixel(x + i % w - grille.startX, y + int(i / w) - grille.startY);
+					// si la couleur est une couleur à regarder, on ajoute la modification de vitesse dans le tableau velocity
+					for (var idx:int = 0; idx < watchedColors.colors.length; idx++) {
+						if (color == watchedColors.colors[idx]) {
+							velocity.push(watchedColors.effects[idx]);
+						}
 					}
 				}
 			}
+			// si le malus de vitesse est égal à la vitesse normal de Movable, alors on est dans un mur
+			return Math.min.apply(null, velocity) == -normalVelocity;
 		}
 	}
 }

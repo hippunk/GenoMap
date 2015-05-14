@@ -58,7 +58,7 @@
 	
 	<!-- Personnages -->
 	<e>
-		<Transform x="0" y="0" />
+		<Transform x="40" y="40" />
 		<TextureResource source="pictures/char.png" id="char" />
 		<CollisionTile collisionTilePath="pictures/charCol.jpg"/>
 		<Layered layerId="layer3" />
@@ -66,7 +66,14 @@
 		<Controlable />
 		<WatchedColors>
 			<p id="colors">
-				<i>0xffff00</i>
+				<i>0xffff00</i> <!-- jaune -->
+				<i>0xffffff</i> <!-- blanc -->
+				<i>0x000000</i> <!-- noir -->
+			</p>
+			<p id="effects">
+				<i>8</i> <!-- jaune -->
+				<i>0</i> <!-- blanc -->
+				<i>-2</i> <!-- noir -->
 			</p>
 		</WatchedColors>
 	</e>

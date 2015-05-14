@@ -43,13 +43,14 @@ package systems {
 		
 		override protected function onProcess(delta:Number):void {
 			super.onProcess(delta);
-				
+			
 			for each (var e:IEntity in controlableEntities.members) {
 				var collisionTile:CollisionTile = collisionTileMapper.getComponent(e);
 				var transform:Transform = transformMapper.getComponent(e);
 				var movable:Movable = movableMapper.getComponent(e);
 				var watchedColors:WatchedColors = watchedColorsMapper.getComponent(e);
 				var collisionMap:CollisionMap = collisionMapMapper.getComponent(etage.members[0]);
+// ne gère qu'un seul étage en dur dans le code
 				var grille:Grille = grilleMapper.getComponent(etage.members[0]);
 				
 				var w:int = collisionTile.bitmapData.width;
@@ -62,17 +63,17 @@ package systems {
 				while (i--) {
 					// si c'est un pixel noir
 					if (collisionTile.bitmapData.getPixel(i % w, int(i / w)) == int(0x000000)) {
+						// on récupère la couleur du pixel de la carte de collision correspondant à la position du pixel noir considéré
 						var color:int = collisionMap.bitmapData.getPixel(transform.x + i % w - grille.startX, transform.y + int(i / w) - grille.startY);
-						for each (var watchedColor:int in watchedColors.colors) {
-							if (color == watchedColor) {
-								velocity.push(8);
-							} else {
-								velocity.push(0);
+						// si la couleur est une couleur à regarder, on ajoute la modification de vitesse dans le tableau velocity
+						for (var idx:int = 0; idx < watchedColors.colors.length; idx++) {
+							if (color == watchedColors.colors[idx]) {
+								velocity.push(watchedColors.effects[idx]);
 							}
 						}
 					}
 				}
-				
+				// la vitesse de déplacement courante de Movable est égal à sa vitesse normal + la plus petite modification de velocity
 				movable.currentVelocity = movable.normalVelocity + Math.min.apply(null, velocity);
 			}
 		}

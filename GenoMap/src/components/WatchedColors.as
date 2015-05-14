@@ -3,5 +3,6 @@ package components {
 	
 	public class WatchedColors extends Component {
 		public var colors:Vector.<int>;
+		public var effects:Vector.<int>;
 	}
 }
