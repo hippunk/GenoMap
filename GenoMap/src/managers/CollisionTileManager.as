@@ -50,7 +50,7 @@ package managers {
 				cptLoad += 1;
 				
 				if (cptLoad == collisionTileEntities.members.length) {
-					trace("CollisionTileManager lancé,");
+					trace("EtageManager lancé,");
 					trace("-->",cptLoad, "tuiles de collision chargées");
 					world.setLogic(new EtageManager());
 				}

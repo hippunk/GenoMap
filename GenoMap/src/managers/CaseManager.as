@@ -7,7 +7,7 @@ package managers {
 	import com.ktm.genome.core.entity.IEntityManager;
 	import com.ktm.genome.core.logic.impl.LogicScope;
 	import components.Case;
-	
+	import components.CollisionTile;
 	public class CaseManager extends LogicScope {
 		
 		[Inject] public var entityManager:IEntityManager;
@@ -18,7 +18,7 @@ package managers {
 		override protected function onConstructed():void {
 			super.onConstructed();
 			
-			caseEntities = entityManager.getFamily(allOfGenes(Case));
+			caseEntities = entityManager.getFamily(allOfGenes(Case,CollisionTile));
 			caseMapper = geneManager.getComponentMapper(Case);
 			
 			//On force l'ajout des cases

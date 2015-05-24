@@ -4,6 +4,7 @@ package {
 	import com.ktm.genome.render.component.Layered;
 	import com.ktm.genome.render.component.Transform;
 	import com.ktm.genome.resource.component.TextureResource;
+	import components.Case;
 	import components.Level;
 	
 	public class EntityFactory {
@@ -13,12 +14,12 @@ package {
 			return e;
 		}
 		
-		static public function createSquare(em:IEntityManager, x:int, y:int, decX:int, decY:int, level:int, layer:String, tex:TextureResource):IEntity {
+		static public function createSquare(em:IEntityManager, nom:String,x:int, y:int, decX:int, decY:int, level:int, layer:String, tex:TextureResource):IEntity {
 			var e:IEntity = em.create();
 			
 			//trace("Dans createSquare, type : " + type);
 			//trace("test : " + (type == "Wall"));		
-			
+			em.addComponent(e , Case, {type:nom});
 			em.addComponent(e, Transform, {x: x + decX, y: y + decY});
 			em.addComponent(e, Layered, {layerId: layer});
 			em.addComponent(e, TextureResource, tex);

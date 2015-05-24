@@ -18,11 +18,15 @@ package managers {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import systems.GameStateSystem;
+	import com.ktm.genome.core.logic.process.ProcessManager;
 	
 	public class EtageManager extends LogicScope {
 		[Inject] public var gss:GameStateSystem;
 		[Inject] public var entityManager:IEntityManager;
 		[Inject] public var geneManager:GeneManager;
+		[Inject] public var processManager:ProcessManager;
+		
+		
 		private var grilleEntities:Family;
 		private var caseEntities:Family;
 		private var grilleMapper:IComponentMapper;
@@ -48,17 +52,10 @@ package managers {
 			colMapper = geneManager.getComponentMapper(CollisionTile);
 			colMapMapper = geneManager.getComponentMapper(CollisionMap);
 			
-			//Récupération de la liste des types existants
-			listeTypes = new Array();
-			for (var i:int = 0; i < caseEntities.members.length; i++) {
-				listeTypes[i] = ((Case) (typeMapper.getComponent(caseEntities.members[i]))).type;
-			}
-			
 			grilleEntities.entityAdded.add(ajout);
 		}
 		
 		protected function ajout(e:IEntity):void {
-			
 			var grille:Grille = grilleMapper.getComponent(e);
 			var colMap:CollisionMap = colMapMapper.getComponent(e);
 			var lay:Layered = layerMapper.getComponent(e);
@@ -68,19 +65,36 @@ package managers {
 			var elm:IEntity;
 			var tex:TextureResource;
 			
+			//Récupération de la liste des types existants
+			listeTypes = new Array();
+			for (var l:int = 0; l < caseEntities.members.length; l++) {
+				listeTypes[l] = ((Case) (typeMapper.getComponent(caseEntities.members[l]))).type;
+			}
+			if (caseEntities.members.length == 0) {
+					processManager.callLater(ajout, e);
+					return;
+			}
+			
 			var collisionMap:BitmapData = new BitmapData(longueur * grille.pixels, hauteur * grille.pixels, false);
 			var rect:Rectangle = new Rectangle(0, 0, grille.pixels, grille.pixels);
 			
 			for (var j:int = 0; j < hauteur; j++) {
 				for (var i:int = 0; i < longueur; i++) {
-					elm = caseEntities.members[listeTypes.indexOf(grille.grille[j][i])];
-					tex = texMapper.getComponent(elm);
-					colTile = colMapper.getComponent(elm);
+					var idx:int = listeTypes.indexOf(grille.grille[j][i]);
+					if (idx == -1) {
+						//processManager.callLater(ajout, e);
+					}	
+					else{
+						elm = caseEntities.members[idx];
+						tex = texMapper.getComponent(elm);
+						colTile = colMapper.getComponent(elm);
+						
+						//Création case par case de la map de collision
+						collisionMap.copyPixels(colTile.bitmapData, rect, new Point(i * grille.pixels, j * grille.pixels));
+						//Création de chaque case de la map
+						EntityFactory.createSquare(entityManager, grille.grille[j][i],grille.pixels * i, grille.pixels * j, grille.startX, grille.startY, grille.level, lay.layerId, tex);
 					
-					//Création case par case de la map de collision
-					collisionMap.copyPixels(colTile.bitmapData, rect, new Point(i * grille.pixels, j * grille.pixels));
-					//Création de chaque case de la map
-					EntityFactory.createSquare(entityManager, grille.pixels * i, grille.pixels * j, grille.startX, grille.startY, grille.level, lay.layerId, tex);
+					}
 				}
 			}
 			
@@ -89,7 +103,7 @@ package managers {
 			// ATTENTION l'état du jeu ne doit être changé qu'une fois TOUTES les grilles chargées. (le code qui suit ne fonctionne pas)
 			cptGrille += 1;
 			if ( cptGrille == grilleEntities.members.length) {
-				trace("EtageManager lancé,");
+				trace("Fin EtageManager");
 				trace("-->",cptGrille, "étages chargés + changement GameState.RUNNING");
 				gss.setGameState(GameState.RUNNING); 
 			}

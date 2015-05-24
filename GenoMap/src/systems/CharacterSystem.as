@@ -16,6 +16,7 @@ package systems {
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
+	import components.Active;
 	
 	public class CharacterSystem extends System {
 		
@@ -33,6 +34,7 @@ package systems {
 		private var right:Boolean;
 		private var up:Boolean;
 		private var down:Boolean;
+		
 		
 		public function CharacterSystem(stage:Stage) {
 			super();
@@ -56,7 +58,7 @@ package systems {
 			collisionMapMapper = geneManager.getComponentMapper(CollisionMap);
 			grilleMapper = geneManager.getComponentMapper(Grille);
 			
-			etage = entityManager.getFamily(allOfGenes(CollisionMap, Grille));
+			etage = entityManager.getFamily(allOfGenes(CollisionMap, Grille,Active));
 			characterEntities = entityManager.getFamily(allOfGenes(Transform, Controlable, Movable, WatchedColors));
 			characterEntities.entityAdded.add(onBonhommeAdded);
 		}
@@ -123,6 +125,7 @@ package systems {
 				var watchedColors:WatchedColors = watchedColorsMapper.getComponent(characterEntity);
 				var textureResource:TextureResource = textureResourceMapper.getComponent(characterEntity);
 				var collisionTile:CollisionTile = collisionTileMapper.getComponent(characterEntity);
+				
 // ne gère qu'un seul étage en dur dans le code
 				var grille:Grille = grilleMapper.getComponent(etage.members[0]);
 				

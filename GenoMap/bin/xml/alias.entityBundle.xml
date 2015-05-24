@@ -13,4 +13,11 @@
 	<a name="Controlable" class="components.Controlable"/>
 	<a name="Movable" class="components.Movable"/>
 	<a name="WatchedColors" class="components.WatchedColors"/>
+	<a name="Focusable" class="components.Focusable"/>
+	<a name="Active" class="components.Active"/>
+	<a name="Dimension" class="components.Dimension"/>
+	<a name="Orientation" class="components.Orientation"/>
+	<a name="Position" class="components.Position"/>
+	<a name="LienEtage" class="components.LienEtage"/>
+	<a name="LienLayer" class="components.LienLayer"/>
 </resource>

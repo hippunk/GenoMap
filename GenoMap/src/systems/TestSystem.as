@@ -10,62 +10,63 @@ package systems {
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
+	import components.Active;
+	import components.Grille;
+	import components.Case;
 	
 	/**
 	 * ...
 	 * @author Arthur
 	 */
 	public class TestSystem extends System {
-		private var entities:Family;
+		private var etages:Family;
+		private var etageActif:Family;
 		private var transformMapper:IComponentMapper;
 		private var levelMapper:IComponentMapper;
+		private var grilleMapper:IComponentMapper;
 		private var stage:Stage;
 		private var track:int = 0;
 		
 		public function TestSystem(stage:Stage) {
 			this.stage = stage;
-			this.stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDownHandler);
-		}
-		
-		private function keyDownHandler(event:KeyboardEvent):void {
-			switch (event.keyCode) {
-				case Keyboard.ENTER:  {
-					track++;
-					break;
-				}
-				default: 
-					break;
-			}
-		
 		}
 		
 		override protected function onConstructed():void {
 			super.onConstructed();
-			entities = entityManager.getFamily(allOfGenes(Level, Transform));
+			etages = entityManager.getFamily(allOfGenes(Level, Transform,Case));
+			etageActif = entityManager.getFamily(allOfGenes(Active,Grille));
 			transformMapper = geneManager.getComponentMapper(Transform);
 			levelMapper = geneManager.getComponentMapper(Level);
+			grilleMapper = geneManager.getComponentMapper(Grille);
 		}
 		
 		override protected function onProcess(delta:Number):void {
 			var level:Level;
+			var grilleActive:Grille;
 			var transform:Transform;
+			var numActif:int = 1;
 			//trace(entities.members.length);
+			//trace("nb levelActif : "+etageActif.members.length);
+			if(etageActif.members.length != 0){
+				var d:IEntity = etageActif.members[0];
+				grilleActive = grilleMapper.getComponent(d);
+				numActif = grilleActive.level;
+			}
 			
-			//Test changement d'etage
 			var i:int = 0;
-			var I:int = entities.members.length;
+			var I:int = etages.members.length;
 			
 			for (i = 0; i < I; i++) {
-				var b:IEntity = entities.members[i];
-				level = levelMapper.getComponent(b);
+				var b:IEntity = etages.members[i];
 				transform = transformMapper.getComponent(b);
-				
-				if (level.level == track % 3)
+				level = levelMapper.getComponent(b);
+				if (numActif == level.level) {
 					transform.alpha = 1;
-				else
+				}
+				else{
 					transform.alpha = 0.2;
+				}				
 			}
-		
 		}
 	}
 

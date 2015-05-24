@@ -3,7 +3,7 @@
 	
 	<!-- Layers -->
 	<e>
-		<Layer id="layer1" index="20"/>
+		<Layer id="layer1" index="10"/>
 	</e>
 	<e>
 		<Layer id="layer2" index="20"/>
@@ -11,68 +11,158 @@
 	<e>
 		<Layer id="layer3" index="30"/>
 	</e>
+	<e>
+		<Layer id="circulable1" index="11"/>
+	</e>
+	<e>
+		<Layer id="circulable2" index="21"/>
+	</e>
+	<e>
+		<Layer id="circulable3" index="31"/>
+	</e>
 	
 	<!-- Cases -->
 	<e>
-		<Case type="Wall"/>
+		<Case type="Mur"/>
 		<TextureResource source="pictures/wall.png" id="wall" />
-		<CollisionTile collisionTilePath="pictures/wallCol.png"/>
+		<CollisionTile collisionTilePath="pictures/fullCol.png"/>
 	</e>
 	<e>
-		<Case type="Floor"/>
+		<Case type="Sol"/>
 		<TextureResource source="pictures/floor.png" id="floor" />
-		<CollisionTile collisionTilePath="pictures/floorCol.png"/>
+		<CollisionTile collisionTilePath="pictures/noCol.png"/>
 	</e>
-	
+	<e>
+		<Case type="Sable"/>
+		<TextureResource source="pictures/sable.png" id="sable" />
+		<CollisionTile collisionTilePath="pictures/sableCol.png"/>
+	</e>
+	<e>
+		<Case type="EauO"/>
+		<TextureResource source="pictures/eauO.png" id="eauO" />
+		<CollisionTile collisionTilePath="pictures/eauOCol.png"/>
+	</e>
+	<e>
+		<Case type="EauN"/>
+		<TextureResource source="pictures/eauN.png" id="eauN" />
+		<CollisionTile collisionTilePath="pictures/eauNCol.png"/>
+	</e>
+	<e>
+		<Case type="EauNO"/>
+		<TextureResource source="pictures/eauNO.png" id="eauNO" />
+		<CollisionTile collisionTilePath="pictures/eauNOCol.png"/>
+	</e>
+	<e>
+		<Case type="Eau"/>
+		<TextureResource source="pictures/eau.png" id="eau" />
+		<CollisionTile collisionTilePath="pictures/eauCol.png"/>
+	</e>
+	<e>
+		<Case type="Escalier"/>
+		<TextureResource source="pictures/stairs.png" id="stairs" />
+		<CollisionTile collisionTilePath="pictures/noCol.png"/>
+	</e>
+	<e>
+		<Case type="VEscalier"/>
+		<TextureResource source="pictures/vstairs.png" id="vstairs" />
+		<CollisionTile collisionTilePath="pictures/noCol.png"/>
+	</e>
+	<!-- Escaliers-->
+	<e>
+		<LienEtage down="1" up="2" />
+		<LienLayer down="circulable1" up="circulable2" />
+		<Position x="288" y="32"/>
+		<Dimension x="32" y="64" />
+		<Orientation orientation="Vertical"/>
+	</e> 
+	<e>
+		<LienEtage down="2" up="3" />
+		<LienLayer down="circulable2" up="circulable3" />
+		<Position x="340" y="288"/>
+		<Dimension x="64" y="32" />
+		<Orientation orientation="Horizontal"/>
+	</e> 
 	<!-- Etages -->
 	<e>
 		<Layered layerId="layer1"/>
 		<CollisionMap />
-		<Grille tailleX="6" tailleY="7" startX="0" level="1" startY="0" pixels="32">
+		<Active />
+		<Grille tailleX="11" tailleY="10" startX="0" level="1" startY="0" pixels="32">
 			<p id="grille">
-				<i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i></i>
-				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
-				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
-				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
-				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
-				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
-				<i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i></i>
+				<i> <i></i> 	  <i></i>      <i></i>      	<i>Mur</i> 	 <i>Mur</i>   <i>Mur</i>   <i>Mur</i> 	   <i>Mur</i> 		  <i>Mur</i> 	  <i>Mur</i> 	  <i>Mur</i> </i>
+				<i> <i>Mur</i>    <i>Mur</i>   <i>Mur</i>   	<i>Mur</i> 	 <i>Sol</i>   <i>Sol</i>   <i>Escalier</i> <i>Escalier</i>    <i>Escalier</i> <i>Escalier</i> <i>Mur</i> </i>
+				<i> <i>Mur</i>    <i>Sol</i>   <i>Sol</i>   	<i>Sol</i> 	 <i>Sol</i>   <i>Sol</i>   <i>Escalier</i> <i>Escalier</i>    <i>Escalier</i> <i>Escalier</i> <i>Mur</i> </i>
+				<i> <i>Mur</i>    <i>Sol</i>   <i>Sol</i>   	<i>Sol</i> 	 <i>Sol</i>   <i>Sol</i>   <i>Mur</i> 	   <i>Mur</i> 	   	  <i>Mur</i> 	  <i>Mur</i>	  <i>Mur</i> </i>
+				<i> <i>Mur</i>    <i>Sol</i>   <i>Sol</i>   	<i>Sol</i> 	 <i>Sol</i>   <i>Sol</i>   <i>Mur</i> 	   <i></i> 	 	  	  <i></i> 	 	  <i></i> 		  <i></i>	 </i>
+				<i> <i>Mur</i>    <i>Sol</i>   <i>Sol</i>   	<i>Sol</i> 	 <i>Sol</i>   <i>Sol</i>   <i>Mur</i>  	   <i></i> 	 	  	  <i></i> 	 	  <i></i> 		  <i></i>	 </i>
+				<i> <i>Mur</i>    <i>Sable</i> <i>Sable</i> 	<i>Sable</i> <i>Sable</i> <i>Sable</i> <i>Mur</i>  	   <i></i> 	 	  	  <i></i> 	 	  <i></i> 		  <i></i>	 </i>
+				<i> <i>Mur</i>    <i>Sable</i> <i>Sable</i> 	<i>Sable</i> <i>EauNO</i> <i>EauN</i>  <i>Mur</i>  	   <i></i> 	 	  	  <i></i> 	 	  <i></i> 		  <i></i>	 </i>
+				<i> <i>Mur</i>    <i>Sable</i> <i>Sable</i> 	<i>Sable</i> <i>EauO</i>  <i>Eau</i>   <i>Mur</i>  	   <i></i> 	 	  	  <i></i>	 	  <i></i> 		  <i></i>	 </i>
+				<i> <i>Mur</i>    <i>Mur</i>   <i>Mur</i> 		<i>Mur</i>	 <i>Mur</i>   <i>Mur</i>   <i>Mur</i>  	   <i></i> 	 	  	  <i></i> 	 	  <i></i> 		  <i></i>	 </i>
 			</p>
 		</Grille>
 	</e>
 	<e>
 		<Layered layerId="layer2"/>
 		<CollisionMap />
-		<Grille tailleX="6" tailleY="7" startX="100" level="2" startY="90" pixels="32">
+		<Grille tailleX="6" tailleY="11" startX="256" level="2" startY="0" pixels="32">
 			<p id="grille">
-				<i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i></i>
-				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
-				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
-				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
-				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
-				<i> <i>Wall</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Floor</i> <i>Wall</i></i>
-				<i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i> <i>Wall</i></i>
+				<i> <i>Mur</i> <i>Mur</i> <i>Mur</i> <i>Mur</i> <i>Mur</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Escalier</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Escalier</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Mur</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Sable</i> <i>Sable</i> <i>Sable</i> <i>Sable</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Sable</i> <i>Sable</i> <i>Sable</i> <i>Sable</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Mur</i> <i>VEscalier</i> <i>VEscalier</i> <i>Mur</i> <i>Mur</i></i>
+				<i> <i></i> <i>Mur</i> <i>VEscalier</i> <i>VEscalier</i> <i>Mur</i> <i></i></i>
+				<i> <i></i> <i>Mur</i> <i>VEscalier</i> <i>VEscalier</i> <i>Mur</i> <i></i></i>
+				<i> <i></i> <i>Mur</i> <i>Mur</i> <i>Mur</i> <i>Mur</i> <i></i></i>
+			</p>
+		</Grille>
+	</e>	
+		<e>
+		<Layered layerId="layer3"/>
+		<CollisionMap />
+		<Grille tailleX="6" tailleY="11" startX="288" level="3" startY="256" pixels="32">
+			<p id="grille">
+				<i> <i>Mur</i> <i>Mur</i> <i>Mur</i> <i>Mur</i> <i>Mur</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>VEscalier</i> <i>VEscalier</i> <i>Mur</i> <i>Sol</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Sol</i> <i>Mur</i></i>
+				<i> <i>Mur</i> <i>Mur</i> <i>Mur</i> <i>Mur</i> <i>Mur</i> <i>Mur</i></i>
 			</p>
 		</Grille>
 	</e>	
 	
 	<!-- Personnages -->
 	<e>
-		<Transform x="40" y="40" />
+		<Transform x="32" y="64" />
+		<Dimension x="32" y="32" />
+		<Level level="1" />
 		<TextureResource source="pictures/char.png" id="char" />
-		<CollisionTile collisionTilePath="pictures/charCol.jpg"/>
-		<Layered layerId="layer3" />
+		<CollisionTile collisionTilePath="pictures/charCol2.JPG"/>
+		<Focusable focused="true"/>
+		<Layered layerId="circulable1" />
 		<Movable normalVelocity="2" />
 		<Controlable />
 		<WatchedColors>
 			<p id="colors">
 				<i>0xffff00</i> <!-- jaune -->
+				<i>0x0000ff</i> <!-- bleu -->
 				<i>0xffffff</i> <!-- blanc -->
 				<i>0x000000</i> <!-- noir -->
 			</p>
 			<p id="effects">
-				<i>8</i> <!-- jaune -->
-				<i>0</i> <!-- blanc -->
+				<i>0.5</i> <!-- jaune -->
+				<i>-2</i> <!-- bleu -->
+				<i>2</i> <!-- blanc -->
 				<i>-2</i> <!-- noir -->
 			</p>
 		</WatchedColors>

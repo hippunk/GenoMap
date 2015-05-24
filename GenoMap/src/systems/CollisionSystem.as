@@ -11,6 +11,7 @@ package systems {
 	import components.Grille;
 	import components.Movable;
 	import components.WatchedColors;
+	import components.Active;
 	
 	public class CollisionSystem extends System {
 		
@@ -31,7 +32,7 @@ package systems {
 			super.onConstructed();
 			
 			controlableEntities = entityManager.getFamily(allOfGenes(Transform, Movable, CollisionTile));
-			etage = entityManager.getFamily(allOfGenes(CollisionMap, Grille));
+			etage = entityManager.getFamily(allOfGenes(CollisionMap, Grille,Active));
 			
 			collisionTileMapper = geneManager.getComponentMapper(CollisionTile);
 			transformMapper = geneManager.getComponentMapper(Transform);
@@ -50,6 +51,7 @@ package systems {
 				var movable:Movable = movableMapper.getComponent(e);
 				var watchedColors:WatchedColors = watchedColorsMapper.getComponent(e);
 				var collisionMap:CollisionMap = collisionMapMapper.getComponent(etage.members[0]);
+				
 // ne gère qu'un seul étage en dur dans le code
 				var grille:Grille = grilleMapper.getComponent(etage.members[0]);
 				
