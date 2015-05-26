@@ -17,7 +17,7 @@ package {
 	import systems.CollisionSystem;
 	import systems.EscalierSystem;
 	import systems.GameStateSystem;
-	import systems.TestSystem;
+	import systems.LevelRenderSystem;
 	import com.ktm.genome.core.logic.process.ProcessManager;
 	
 	public class GenoMap extends Sprite {
@@ -45,17 +45,17 @@ package {
 			sm.setSystem(ResourceManager).setProcess(ProcessPhase.TICK, int.MAX_VALUE);
 			sm.setSystem(new RenderSystem(this)).setProcess(ProcessPhase.FRAME);
 			
-			var test:TestSystem = new TestSystem(this.stage);
+			var levelRS:LevelRenderSystem = new LevelRenderSystem(this.stage);
 			var characterSystem:CharacterSystem = new CharacterSystem(this.stage);
 			var collisionSystem:CollisionSystem = new CollisionSystem();
 			var escalierSystem:EscalierSystem = new EscalierSystem();
 			
-			gss.addGameStatesForSystem(test, GameState.RUNNING);
+			gss.addGameStatesForSystem(levelRS, GameState.RUNNING);
 			gss.addGameStatesForSystem(characterSystem, GameState.RUNNING);
 			gss.addGameStatesForSystem(collisionSystem, GameState.RUNNING);
 			gss.addGameStatesForSystem(escalierSystem, GameState.RUNNING);
 			
-			sm.setSystem(test).setProcess(ProcessPhase.FRAME);
+			sm.setSystem(levelRS).setProcess(ProcessPhase.FRAME);
 			sm.setSystem(characterSystem).setProcess(ProcessPhase.FRAME);
 			sm.setSystem(collisionSystem).setProcess(ProcessPhase.FRAME);
 			sm.setSystem(escalierSystem).setProcess(ProcessPhase.FRAME);

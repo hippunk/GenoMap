@@ -78,7 +78,7 @@
 	<e>
 		<LienEtage down="2" up="3" />
 		<LienLayer down="circulable2" up="circulable3" />
-		<Position x="340" y="288"/>
+		<Position x="320" y="288"/>
 		<Dimension x="64" y="32" />
 		<Orientation orientation="Horizontal"/>
 	</e> 

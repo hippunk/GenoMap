@@ -103,8 +103,8 @@ package managers {
 			// ATTENTION l'état du jeu ne doit être changé qu'une fois TOUTES les grilles chargées. (le code qui suit ne fonctionne pas)
 			cptGrille += 1;
 			if ( cptGrille == grilleEntities.members.length) {
-				trace("Fin EtageManager");
-				trace("-->",cptGrille, "étages chargés + changement GameState.RUNNING");
+				//trace("Fin EtageManager");
+				//trace("-->",cptGrille, "étages chargés + changement GameState.RUNNING");
 				gss.setGameState(GameState.RUNNING); 
 			}
 		}

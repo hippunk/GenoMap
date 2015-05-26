@@ -97,7 +97,7 @@ package systems
 					var lev:Level = levelMapper.getComponent(f);
 					if(boolEsc[e] == null || boolEsc[e] == true){
 						if (tran.x+dimPerso.x/2 < pos.x + dim.x && tran.x + dimPerso.x/2 > pos.x && tran.y +dimPerso.y/2< pos.y + dim.y && dimPerso.y/2 + tran.y > pos.y) {
-							trace("Dans escalier");
+							//trace("Dans escalier");
 							boolEsc[e] = false;
 							//Modificateur garantie pas de blocage
 							if(ori.orientation == "Vertical"){
@@ -111,11 +111,11 @@ package systems
 								entityManager.removeComponent(f, layeredMapper.gene);
 			
 								if (lila.down == (String)(layPerso.layerId)){
-									trace("On monte");
+									//trace("On monte");
 									entityManager.addComponent(f, Layered,{layerId:lila.up});
 								}
 								else if (lila.up == (String)(layPerso.layerId)){
-									trace("On dessend");
+									//trace("On dessend");
 									entityManager.addComponent(f, Layered,{layerId:lila.down});
 								}
 								else {
@@ -130,7 +130,7 @@ package systems
 								var entEtageUp:IEntity;
 								for each (var h:IEntity in maps.members) {
 									var map:Grille = grilleMapper.getComponent(h)
-									trace("Niveau : " + map.level);
+									//trace("Niveau : " + map.level);
 									if (liet.up == map.level) {
 										etageUp = map;
 										entEtageUp = h;
@@ -141,7 +141,7 @@ package systems
 									}
 								}
 								
-								trace("Debug : " + etageDown.level + " " + etageUp.level);
+								//trace("Debug : " + etageDown.level + " " + etageUp.level);
 								if (etageDown.level == lev.level) {
 									lev.level = etageUp.level;
 									entityManager.removeComponent(entEtageDown, activeMapper.gene);
@@ -160,7 +160,7 @@ package systems
 					}
 					else {
 							if (!(tran.x+dimPerso.x/2 < pos.x + dim.x && tran.x + dimPerso.x/2 > pos.x && tran.y +dimPerso.y/2< pos.y + dim.y && dimPerso.y/2 + tran.y > pos.y)) {
-							trace("Sortie escalier");
+							//trace("Sortie escalier");
 							boolEsc[e] = true;
 						}
 					}

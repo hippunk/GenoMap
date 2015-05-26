@@ -18,7 +18,7 @@ package systems {
 	 * ...
 	 * @author Arthur
 	 */
-	public class TestSystem extends System {
+	public class LevelRenderSystem extends System {
 		private var etages:Family;
 		private var etageActif:Family;
 		private var transformMapper:IComponentMapper;
@@ -27,7 +27,7 @@ package systems {
 		private var stage:Stage;
 		private var track:int = 0;
 		
-		public function TestSystem(stage:Stage) {
+		public function LevelRenderSystem(stage:Stage) {
 			this.stage = stage;
 		}
 		
