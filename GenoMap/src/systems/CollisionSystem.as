@@ -16,7 +16,7 @@ package systems {
 	public class CollisionSystem extends System {
 		
 		private var controlableEntities:Family;
-		private var etage:Family;
+		private var etageActif:Family;
 		private var collisionTileMapper:IComponentMapper;
 		private var transformMapper:IComponentMapper;
 		private var movableMapper:IComponentMapper;
@@ -32,7 +32,7 @@ package systems {
 			super.onConstructed();
 			
 			controlableEntities = entityManager.getFamily(allOfGenes(Transform, Movable, CollisionTile));
-			etage = entityManager.getFamily(allOfGenes(CollisionMap, Grille,Active));
+			etageActif = entityManager.getFamily(allOfGenes(CollisionMap, Grille,Active));
 			
 			collisionTileMapper = geneManager.getComponentMapper(CollisionTile);
 			transformMapper = geneManager.getComponentMapper(Transform);
@@ -50,10 +50,10 @@ package systems {
 				var transform:Transform = transformMapper.getComponent(e);
 				var movable:Movable = movableMapper.getComponent(e);
 				var watchedColors:WatchedColors = watchedColorsMapper.getComponent(e);
-				var collisionMap:CollisionMap = collisionMapMapper.getComponent(etage.members[0]);
+				var collisionMap:CollisionMap = collisionMapMapper.getComponent(etageActif.members[0]);
 				
-// ne gère qu'un seul étage en dur dans le code
-				var grille:Grille = grilleMapper.getComponent(etage.members[0]);
+				// récupère le composant grille de l'étage actif
+				var grille:Grille = grilleMapper.getComponent(etageActif.members[0]);
 				
 				var w:int = collisionTile.bitmapData.width;
 				var h:int = collisionTile.bitmapData.height;

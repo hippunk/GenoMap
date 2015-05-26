@@ -6,7 +6,7 @@ package systems {
 	import com.ktm.genome.core.entity.IEntity;
 	import com.ktm.genome.core.logic.system.System;
 	import com.ktm.genome.render.component.Transform;
-	import com.ktm.genome.resource.component.TextureResource;
+	import components.Active;
 	import components.CollisionMap;
 	import components.CollisionTile;
 	import components.Controlable;
@@ -16,25 +16,22 @@ package systems {
 	import flash.display.Stage;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
-	import components.Active;
 	
 	public class CharacterSystem extends System {
 		
 		private var stage:Stage;
-		private var etage:Family;
+		private var etageActif:Family;
 		private var characterEntities:Family;
 		private var transformMapper:IComponentMapper;
 		private var movableMapper:IComponentMapper;
-		private var textureResourceMapper:IComponentMapper;
+		private var grilleMapper:IComponentMapper;
 		private var collisionTileMapper:IComponentMapper;
 		private var watchedColorsMapper:IComponentMapper;
 		private var collisionMapMapper:IComponentMapper;
-		private var grilleMapper:IComponentMapper;
 		private var left:Boolean;
 		private var right:Boolean;
 		private var up:Boolean;
 		private var down:Boolean;
-		
 		
 		public function CharacterSystem(stage:Stage) {
 			super();
@@ -52,20 +49,13 @@ package systems {
 			
 			transformMapper = geneManager.getComponentMapper(Transform);
 			movableMapper = geneManager.getComponentMapper(Movable);
-			textureResourceMapper = geneManager.getComponentMapper(TextureResource);
 			collisionTileMapper = geneManager.getComponentMapper(CollisionTile);
 			watchedColorsMapper = geneManager.getComponentMapper(WatchedColors);
 			collisionMapMapper = geneManager.getComponentMapper(CollisionMap);
 			grilleMapper = geneManager.getComponentMapper(Grille);
 			
-			etage = entityManager.getFamily(allOfGenes(CollisionMap, Grille,Active));
+			etageActif = entityManager.getFamily(allOfGenes(CollisionMap, Grille, Active));
 			characterEntities = entityManager.getFamily(allOfGenes(Transform, Controlable, Movable, WatchedColors));
-			characterEntities.entityAdded.add(onBonhommeAdded);
-		}
-		
-		private function onBonhommeAdded(e:IEntity):void {
-			var movable:Movable = movableMapper.getComponent(e);
-			movable.currentVelocity = movable.normalVelocity;
 		}
 		
 		private function keyDownHandler(event:KeyboardEvent):void {
@@ -118,20 +108,16 @@ package systems {
 			super.onProcess(delta);
 			
 			for each (var characterEntity:IEntity in characterEntities.members) {
-				//for (var iChar:int = 0; iChar < characterEntities.members.length; iChar++) {
-				//	var characterEntity:IEntity = characterEntities.members[iChar];
 				var transform:Transform = transformMapper.getComponent(characterEntity);
 				var movable:Movable = movableMapper.getComponent(characterEntity);
 				var watchedColors:WatchedColors = watchedColorsMapper.getComponent(characterEntity);
-				var textureResource:TextureResource = textureResourceMapper.getComponent(characterEntity);
 				var collisionTile:CollisionTile = collisionTileMapper.getComponent(characterEntity);
 				
-// ne gère qu'un seul étage en dur dans le code
-				var grille:Grille = grilleMapper.getComponent(etage.members[0]);
-				
+				// les coordonnées de l'entité déplacable considérée
 				var x:int = transform.x;
 				var y:int = transform.y;
 				
+				// selon les valeurs de up, down, left et right, on calcul x et y, les futures coordonnées de l'entité
 				if (left && !up && !down) {
 					x -= movable.currentVelocity;
 				}
@@ -161,7 +147,8 @@ package systems {
 					x -= movable.currentVelocity;
 				}
 				
-				if (!inWall(collisionTile, x, y, etage.members[0], movable.normalVelocity, watchedColors)) {
+				// si la future position de l'entité n'est pas un mur, on autorise le déplacement
+				if (!inWall(collisionTile, x, y, etageActif.members[0], movable.normalVelocity, watchedColors)) {
 					transform.x = x;
 					transform.y = y;
 				}
@@ -191,7 +178,7 @@ package systems {
 					}
 				}
 			}
-			// si le malus de vitesse est égal à la vitesse normal de Movable, alors on est dans un mur
+			// si le malus de vitesse est égal à la vitesse normale de Movable, alors on est dans un mur
 			return Math.min.apply(null, velocity) == -normalVelocity;
 		}
 	}

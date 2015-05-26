@@ -6,18 +6,12 @@ package systems {
 	import com.ktm.genome.core.entity.IEntity;
 	import com.ktm.genome.core.logic.system.System;
 	import com.ktm.genome.render.component.Transform;
+	import components.Active;
+	import components.Case;
+	import components.Grille;
 	import components.Level;
 	import flash.display.Stage;
-	import flash.events.KeyboardEvent;
-	import flash.ui.Keyboard;
-	import components.Active;
-	import components.Grille;
-	import components.Case;
 	
-	/**
-	 * ...
-	 * @author Arthur
-	 */
 	public class LevelRenderSystem extends System {
 		private var etages:Family;
 		private var etageActif:Family;
@@ -33,8 +27,8 @@ package systems {
 		
 		override protected function onConstructed():void {
 			super.onConstructed();
-			etages = entityManager.getFamily(allOfGenes(Level, Transform,Case));
-			etageActif = entityManager.getFamily(allOfGenes(Active,Grille));
+			etages = entityManager.getFamily(allOfGenes(Level, Transform, Case));
+			etageActif = entityManager.getFamily(allOfGenes(Active, Grille));
 			transformMapper = geneManager.getComponentMapper(Transform);
 			levelMapper = geneManager.getComponentMapper(Level);
 			grilleMapper = geneManager.getComponentMapper(Grille);
@@ -47,7 +41,7 @@ package systems {
 			var numActif:int = 1;
 			//trace(entities.members.length);
 			//trace("nb levelActif : "+etageActif.members.length);
-			if(etageActif.members.length != 0){
+			if (etageActif.members.length != 0) {
 				var d:IEntity = etageActif.members[0];
 				grilleActive = grilleMapper.getComponent(d);
 				numActif = grilleActive.level;
@@ -62,10 +56,9 @@ package systems {
 				level = levelMapper.getComponent(b);
 				if (numActif == level.level) {
 					transform.alpha = 1;
-				}
-				else{
+				} else {
 					transform.alpha = 0.2;
-				}				
+				}
 			}
 		}
 	}

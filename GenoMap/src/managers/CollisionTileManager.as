@@ -8,7 +8,6 @@ package managers {
 	import com.ktm.genome.core.entity.IEntityManager;
 	import com.ktm.genome.core.IWorld;
 	import com.ktm.genome.core.logic.impl.LogicScope;
-	import components.Case;
 	import components.CollisionTile;
 	import flash.display.Bitmap;
 	import flash.display.Loader;
@@ -49,9 +48,8 @@ package managers {
 				colTile.bitmapData = Bitmap(event.target.content).bitmapData;
 				cptLoad += 1;
 				
+				// lorsque toutes les tuiles de collision ont été chargées, on peut commencer à construire les étages
 				if (cptLoad == collisionTileEntities.members.length) {
-					//trace("EtageManager lancé,");
-					//trace("-->",cptLoad, "tuiles de collision chargées");
 					world.setLogic(new EtageManager());
 				}
 			};

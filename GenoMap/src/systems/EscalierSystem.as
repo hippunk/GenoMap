@@ -1,32 +1,26 @@
-package systems 
-{
+package systems {
+	import com.ktm.genome.core.data.component.IComponentMapper;
 	import com.ktm.genome.core.entity.family.Family;
+	import com.ktm.genome.core.entity.family.matcher.allOfGenes;
+	import com.ktm.genome.core.entity.IEntity;
 	import com.ktm.genome.core.logic.system.System;
-	import components.Grille;
-	import com.ktm.genome.render.component.Transform;
-	import components.Position;
-	import components.Orientation;
-	import components.LienLayer;
-	import components.LienEtage;
-	import components.Dimension;
 	import com.ktm.genome.render.component.Layer;
 	import com.ktm.genome.render.component.Layered;
-	import components.Focusable;
-	import components.Movable;
-	import com.ktm.genome.core.data.component.IComponentMapper;
-	import com.ktm.genome.core.entity.family.matcher.allOfGenes;
-	import components.CollisionMap;
-	import com.ktm.genome.core.entity.IEntity;
-	import components.Level;
+	import com.ktm.genome.render.component.Transform;
 	import components.Active;
+	import components.CollisionMap;
+	import components.Dimension;
+	import components.Focusable;
+	import components.Grille;
+	import components.Level;
+	import components.LienEtage;
+	import components.LienLayer;
+	import components.Movable;
+	import components.Orientation;
+	import components.Position;
 	import flash.utils.Dictionary;
-
-	/**
-	 * ...
-	 * @author Arthur
-	 */
-	public class EscalierSystem extends System 
-	{
+	
+	public class EscalierSystem extends System {
 		private var escaliers:Family;
 		private var layers:Family;
 		private var maps:Family;
@@ -49,8 +43,7 @@ package systems
 		
 		private var sortie:Boolean = true;
 		
-		public function EscalierSystem() 
-		{
+		public function EscalierSystem() {
 			super();
 		}
 		
@@ -89,77 +82,70 @@ package systems
 				var liet:LienEtage = lienEtageMapper.getComponent(e);
 				var lila:LienLayer = lienLayerMapper.getComponent(e);
 				
-				
 				for each (var f:IEntity in persos.members) {
 					var tran:Transform = transformMapper.getComponent(f);
 					var dimPerso:Dimension = dimensionMapper.getComponent(f);
 					var layPerso:Layered = layeredMapper.getComponent(f);
 					var lev:Level = levelMapper.getComponent(f);
-					if(boolEsc[e] == null || boolEsc[e] == true){
-						if (tran.x+dimPerso.x/2 < pos.x + dim.x && tran.x + dimPerso.x/2 > pos.x && tran.y +dimPerso.y/2< pos.y + dim.y && dimPerso.y/2 + tran.y > pos.y) {
+					if (boolEsc[e] == null || boolEsc[e] == true) {
+						if (tran.x + dimPerso.x / 2 < pos.x + dim.x && tran.x + dimPerso.x / 2 > pos.x && tran.y + dimPerso.y / 2 < pos.y + dim.y && dimPerso.y / 2 + tran.y > pos.y) {
 							//trace("Dans escalier");
 							boolEsc[e] = false;
 							//Modificateur garantie pas de blocage
-							if(ori.orientation == "Vertical"){
-								tran.x = pos.x + dim.x/2 - dimPerso.x/2;
+							if (ori.orientation == "Vertical") {
+								tran.x = pos.x + dim.x / 2 - dimPerso.x / 2;
+							} else if (ori.orientation == "Horizontal") {
+								tran.y = pos.y + dim.y / 2 - dimPerso.y / 2;
 							}
-							else if(ori.orientation == "Horizontal"){
-								tran.y = pos.y + dim.y/2 - dimPerso.y/2;
-							}
-
+							
 							//Changement de layer :
-								entityManager.removeComponent(f, layeredMapper.gene);
-			
-								if (lila.down == (String)(layPerso.layerId)){
-									//trace("On monte");
-									entityManager.addComponent(f, Layered,{layerId:lila.up});
-								}
-								else if (lila.up == (String)(layPerso.layerId)){
-									//trace("On dessend");
-									entityManager.addComponent(f, Layered,{layerId:lila.down});
-								}
-								else {
-									trace("Pas de match possible pour l'escalier");
-									return;
-								}
-								
+							entityManager.removeComponent(f, layeredMapper.gene);
+							
+							if (lila.down == (String)(layPerso.layerId)) {
+								//trace("On monte");
+								entityManager.addComponent(f, Layered, {layerId: lila.up});
+							} else if (lila.up == (String)(layPerso.layerId)) {
+								//trace("On dessend");
+								entityManager.addComponent(f, Layered, {layerId: lila.down});
+							} else {
+								trace("Pas de match possible pour l'escalier");
+								return;
+							}
+							
 							//Changement d'etage actif :
-								var etageDown:Grille;
-								var etageUp:Grille;
-								var entEtageDown:IEntity;
-								var entEtageUp:IEntity;
-								for each (var h:IEntity in maps.members) {
-									var map:Grille = grilleMapper.getComponent(h)
-									//trace("Niveau : " + map.level);
-									if (liet.up == map.level) {
-										etageUp = map;
-										entEtageUp = h;
-									}
-									if (liet.down == map.level) {
-										etageDown = map;
-										entEtageDown = h;
-									}
+							var etageDown:Grille;
+							var etageUp:Grille;
+							var entEtageDown:IEntity;
+							var entEtageUp:IEntity;
+							for each (var h:IEntity in maps.members) {
+								var map:Grille = grilleMapper.getComponent(h)
+								//trace("Niveau : " + map.level);
+								if (liet.up == map.level) {
+									etageUp = map;
+									entEtageUp = h;
 								}
-								
-								//trace("Debug : " + etageDown.level + " " + etageUp.level);
-								if (etageDown.level == lev.level) {
-									lev.level = etageUp.level;
-									entityManager.removeComponent(entEtageDown, activeMapper.gene);
-									entityManager.addComponent(entEtageUp, Active);
+								if (liet.down == map.level) {
+									etageDown = map;
+									entEtageDown = h;
 								}
-								else if (etageUp.level == lev.level) {
-									lev.level = etageDown.level;
-									entityManager.removeComponent(entEtageUp, activeMapper.gene);
-									entityManager.addComponent(entEtageDown, Active);
-								}
-								else {
-									trace("Pas de match possible pour l'escalier");
-									return;
-								}
+							}
+							
+							//trace("Debug : " + etageDown.level + " " + etageUp.level);
+							if (etageDown.level == lev.level) {
+								lev.level = etageUp.level;
+								entityManager.removeComponent(entEtageDown, activeMapper.gene);
+								entityManager.addComponent(entEtageUp, Active);
+							} else if (etageUp.level == lev.level) {
+								lev.level = etageDown.level;
+								entityManager.removeComponent(entEtageUp, activeMapper.gene);
+								entityManager.addComponent(entEtageDown, Active);
+							} else {
+								trace("Pas de match possible pour l'escalier");
+								return;
+							}
 						}
-					}
-					else {
-							if (!(tran.x+dimPerso.x/2 < pos.x + dim.x && tran.x + dimPerso.x/2 > pos.x && tran.y +dimPerso.y/2< pos.y + dim.y && dimPerso.y/2 + tran.y > pos.y)) {
+					} else {
+						if (!(tran.x + dimPerso.x / 2 < pos.x + dim.x && tran.x + dimPerso.x / 2 > pos.x && tran.y + dimPerso.y / 2 < pos.y + dim.y && dimPerso.y / 2 + tran.y > pos.y)) {
 							//trace("Sortie escalier");
 							boolEsc[e] = true;
 						}

@@ -1,6 +1,7 @@
 package {
 	import com.ktm.genome.core.BigBang;
 	import com.ktm.genome.core.IWorld;
+	import com.ktm.genome.core.logic.process.ProcessManager;
 	import com.ktm.genome.core.logic.process.ProcessPhase;
 	import com.ktm.genome.core.logic.system.ISystemManager;
 	import com.ktm.genome.render.system.RenderSystem;
@@ -11,14 +12,12 @@ package {
 	import components.WatchedColors;
 	import constants.GameState;
 	import flash.display.Sprite;
-	import managers.CaseManager;
 	import managers.CollisionTileManager;
 	import systems.CharacterSystem;
 	import systems.CollisionSystem;
 	import systems.EscalierSystem;
 	import systems.GameStateSystem;
 	import systems.LevelRenderSystem;
-	import com.ktm.genome.core.logic.process.ProcessManager;
 	
 	public class GenoMap extends Sprite {
 		
@@ -36,7 +35,6 @@ package {
 			gss.setGameState(GameState.LOADING);
 			
 			//Appel des managers de construction de la map
-			//world.setLogic(new CaseManager()); //Force les cases à se charger
 			//Dans un premier temps on charge toutes les tuiles de collision (case et personnage)
 			world.setLogic(new CollisionTileManager());
 			//Dans un second temps on génère les étages

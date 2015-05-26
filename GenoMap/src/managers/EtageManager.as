@@ -7,26 +7,25 @@ package managers {
 	import com.ktm.genome.core.entity.IEntity;
 	import com.ktm.genome.core.entity.IEntityManager;
 	import com.ktm.genome.core.logic.impl.LogicScope;
+	import com.ktm.genome.core.logic.process.ProcessManager;
 	import com.ktm.genome.render.component.Layered;
 	import com.ktm.genome.resource.component.TextureResource;
+	import components.Case;
 	import components.CollisionMap;
 	import components.CollisionTile;
 	import components.Grille;
-	import components.Case;
 	import constants.GameState;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import systems.GameStateSystem;
-	import com.ktm.genome.core.logic.process.ProcessManager;
 	
 	public class EtageManager extends LogicScope {
 		[Inject] public var gss:GameStateSystem;
 		[Inject] public var entityManager:IEntityManager;
 		[Inject] public var geneManager:GeneManager;
 		[Inject] public var processManager:ProcessManager;
-		
-		
+
 		private var grilleEntities:Family;
 		private var caseEntities:Family;
 		private var grilleMapper:IComponentMapper;
@@ -36,12 +35,10 @@ package managers {
 		private var colMapper:IComponentMapper;
 		private var colMapMapper:IComponentMapper;
 		private var listeTypes:Array;
-		private var cptGrille:int;
 		
 		override protected function onConstructed():void {
 			super.onConstructed();
 			
-			cptGrille = 0;
 			grilleEntities = entityManager.getFamily(allOfGenes(Grille));
 			grilleMapper = geneManager.getComponentMapper(Grille);
 			
@@ -71,8 +68,8 @@ package managers {
 				listeTypes[l] = ((Case) (typeMapper.getComponent(caseEntities.members[l]))).type;
 			}
 			if (caseEntities.members.length == 0) {
-					processManager.callLater(ajout, e);
-					return;
+				processManager.callLater(ajout, e);
+				return;
 			}
 			
 			var collisionMap:BitmapData = new BitmapData(longueur * grille.pixels, hauteur * grille.pixels, false);
@@ -100,13 +97,7 @@ package managers {
 			
 			colMap.bitmapData = collisionMap;
 			
-			// ATTENTION l'état du jeu ne doit être changé qu'une fois TOUTES les grilles chargées. (le code qui suit ne fonctionne pas)
-			cptGrille += 1;
-			if ( cptGrille == grilleEntities.members.length) {
-				//trace("Fin EtageManager");
-				//trace("-->",cptGrille, "étages chargés + changement GameState.RUNNING");
-				gss.setGameState(GameState.RUNNING); 
-			}
+			gss.setGameState(GameState.RUNNING); 
 		}
 	}
 }
